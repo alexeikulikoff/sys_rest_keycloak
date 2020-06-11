@@ -1,0 +1,50 @@
+spring:
+  main:
+      banner-mode: "off"
+  application:
+     name: REST_KEYCLOAK_SERVICE
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://172.16.0.149:8761/eureka
+
+
+server:
+  port: 19999
+  servlet:
+     context-path: /
+logging:
+  file: /var/log/sys101_rest_keycloak.log    
+info:
+  project:
+    artifactId: sys101_rest_keycloak
+    version: 0.0.1-SNAPSHOT
+
+rest:
+  request:
+    default:
+      page: 0
+      size: 20
+
+keycloak:
+  cors: true
+  realm: sys101
+  auth-server-url: http://localhost:8180/auth
+  ssl-required: external
+  resource: sys101_rest_keycloak_service
+  bearer-only: true
+  credentials.secret: 6e72eedb-8822-4df1-8602-8386fd55c1ef
+  securityConstraints[0]:
+     authRoles[0]: user
+     securityCollections[0]:
+        patterns[0]: /api/rest/keycloak/*
+   
+swagger:
+   auth:
+      token-url: ${keycloak.auth-server-url}/realms/${keycloak.realm}/protocol/openid-connect/token
+      auth-url: ${keycloak.auth-server-url}/realms/${keycloak.realm}/protocol/openid-connect/auth
+      client-id: sys101_rest_keycloak_swagger
+      client-secret : 6e54208b-10f9-4c14-972d-2ebc01025c95
+
+
